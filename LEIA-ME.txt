@@ -1,0 +1,21 @@
+# Checklist Fotográfico — pacote inicial Android
+
+Este pacote inclui o HTML enviado, uma implementação de `app.js` para os controles visíveis, manifesto, ícone e cache offline básico.
+
+## Gerar o APK
+É necessário um computador com Node.js e Android Studio/Android SDK.
+
+1. Abra o terminal nesta pasta.
+2. Execute:
+   npm install
+   npm install @capacitor/android
+   npx cap add android
+   npx cap sync android
+   npx cap open android
+3. No Android Studio, use Build > Build Bundle(s) / APK(s) > Build APK(s).
+
+Observações:
+- Os dados são armazenados localmente no navegador/WebView do aparelho. Faça backups regularmente.
+- A exportação PDF abre a impressão do Android; escolha "Salvar como PDF".
+- O app foi reconstruído a partir do único HTML fornecido. Não foi possível recuperar código-fonte privado ou recursos que não estavam nesse arquivo.
+- Teste criação de checklist, fotos, backup e restauração antes de usar em inspeções importantes.
