@@ -1,10 +1,10 @@
-
 name: Gerar APK Android
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - principal
 
 jobs:
   build:
@@ -20,18 +20,24 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Configurar Node
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Preparar aplicativo
+      - name: Instalar dependências
+        run: |
+          npm install
+          npm install @capacitor/android@7.4.3
+
+      - name: Preparar arquivos web
         run: |
           mkdir -p www
           cp index.html app.js manifest.webmanifest icon.svg sw.js www/
-          node -e "let c=require('./capacitor.config.json'); c.webDir='www'; require('fs').writeFileSync('capacitor.config.json',JSON.stringify(c,null,2))"
-          npm install
-          npm install @capacitor/android@^7.4.3
+          node -e "const fs=require('fs'); const c=JSON.parse(fs.readFileSync('capacitor.config.json','utf8')); c.webDir='www'; fs.writeFileSync('capacitor.config.json', JSON.stringify(c, null, 2));"
+
+      - name: Criar e sincronizar projeto Android
+        run: |
           npx cap add android
           npx cap sync android
 
@@ -46,3 +52,4 @@ jobs:
         with:
           name: Checklist-Fotografico-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
